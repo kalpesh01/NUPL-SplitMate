@@ -23,7 +23,7 @@ public class User {
     private String name;
 
     @NotNull
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @OneToMany(mappedBy = "user")

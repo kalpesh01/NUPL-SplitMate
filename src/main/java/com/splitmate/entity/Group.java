@@ -7,11 +7,12 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@EntityListeners(AuditingEntityListener.class)
+//@EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table(name = "groups")
+@Table(name = "user_groups")
 @Getter
 @Setter
 public class Group {
@@ -25,13 +26,17 @@ public class Group {
     @Column(name = "name")
     private String name;
 
-    @CreationTimestamp
+//    @CreationTimestamp
     @Column(name = "created_date", updatable = false)
     private String createdDate;
 
-    @OneToMany(mappedBy = "group")
-    private List<GroupMember> members;
+    @OneToMany(mappedBy = "group",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<GroupMember> members  = new ArrayList<>();;
 
-    @OneToMany(mappedBy = "group")
-    private List<Expense> expenses;
+    @OneToMany(mappedBy = "group",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<Expense> expenses = new ArrayList<>();
 }
