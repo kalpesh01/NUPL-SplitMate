@@ -1,18 +1,20 @@
 package com.splitmate.service;
 
-import com.splitmate.dto.request.UpdateSplitRequest;
-import com.splitmate.dto.response.SplitResponse;
+import com.splitmate.dto.expense_split.UpdateExpenseSplitDto;
+import com.splitmate.dto.expense_split.ExpenseSplitInfoDto;
 import com.splitmate.entity.ExpenseSplit;
 
 import java.util.List;
 
 public interface ExpenseSplitService {
 
-    List<SplitResponse> getSplits(Long expenseId);
+    ExpenseSplitInfoDto create(ExpenseSplit expenseSplit);
 
-    SplitResponse updateSplit(Long expenseId, Long splitId, UpdateSplitRequest req);
+    List<ExpenseSplitInfoDto> get(Long expenseId);
 
-    void deleteSplit(Long expenseId, Long splitId);
+    ExpenseSplitInfoDto update(Long expenseId, Long splitId, UpdateExpenseSplitDto req);
+
+    void delete(Long expenseId, Long splitId);
 }
 
 

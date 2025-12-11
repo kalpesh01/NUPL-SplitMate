@@ -1,11 +1,11 @@
-package com.splitmate.dto.request;
+package com.splitmate.dto.group;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GroupRequest {
+public class CreateGroupDto {
     private String name;
 }
 

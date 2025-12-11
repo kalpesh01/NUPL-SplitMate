@@ -29,7 +29,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<GroupMember> memberships;
 
-    @OneToMany(mappedBy = "paidBy")
+    @OneToMany(mappedBy = "paidOutBy")
     private List<Expense> expensesPaid;
 
 }

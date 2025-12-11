@@ -1,11 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.UpdateSplitRequest;
-import com.splitmate.dto.response.SplitResponse;
-import com.splitmate.entity.ExpenseSplit;
+import com.splitmate.dto.expense_split.UpdateExpenseSplitDto;
+import com.splitmate.dto.expense_split.ExpenseSplitInfoDto;
 import com.splitmate.service.ExpenseSplitService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,30 +11,31 @@ import java.util.List;
 @RequestMapping("/api/expenses/{expenseId}/splits")
 public class ExpenseSplitController {
 
-    @Autowired
-    private ExpenseSplitService service;
+    private final ExpenseSplitService expenseSplitService;
 
+    public ExpenseSplitController(ExpenseSplitService expenseSplitService) {
+        this.expenseSplitService = expenseSplitService;
+    }
     @GetMapping
-    public ResponseEntity<List<SplitResponse>> getAll(@PathVariable Long expenseId) {
-        return ResponseEntity.ok(service.getSplits(expenseId));
+    public List<ExpenseSplitInfoDto> getAll(@PathVariable Long expenseId) {
+        return expenseSplitService.get(expenseId);
     }
 
     @PutMapping("/{splitId}")
-    public ResponseEntity<SplitResponse> update(
+    public ExpenseSplitInfoDto update(
             @PathVariable Long expenseId,
             @PathVariable Long splitId,
-            @RequestBody UpdateSplitRequest req) {
+            @RequestBody UpdateExpenseSplitDto req) {
 
-        return ResponseEntity.ok(service.updateSplit(expenseId, splitId, req));
+        return expenseSplitService.update(expenseId, splitId, req);
     }
 
     @DeleteMapping("/{splitId}")
-    public ResponseEntity<Void> delete(
+    public void delete(
             @PathVariable Long expenseId,
             @PathVariable Long splitId) {
 
-        service.deleteSplit(expenseId, splitId);
-        return ResponseEntity.noContent().build();
+        expenseSplitService.delete(expenseId, splitId);
     }
 }
 

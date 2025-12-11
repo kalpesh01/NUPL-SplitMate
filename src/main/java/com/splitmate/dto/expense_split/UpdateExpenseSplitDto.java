@@ -1,11 +1,11 @@
-package com.splitmate.dto.request;
+package com.splitmate.dto.expense_split;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateSplitRequest {
+public class UpdateExpenseSplitDto {
     private Double shareAmount;
     private String paymentStatus;
 }

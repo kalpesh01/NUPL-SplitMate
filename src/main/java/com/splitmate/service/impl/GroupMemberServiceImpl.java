@@ -1,36 +1,38 @@
 package com.splitmate.service.impl;
 
-import com.splitmate.dao.GroupMemberRepository;
-import com.splitmate.dao.GroupRepository;
-import com.splitmate.dao.UserRepository;
-import com.splitmate.dto.request.AddMemberRequest;
-import com.splitmate.dto.response.MemberResponse;
+import com.splitmate.dao.GroupMemberDao;
+import com.splitmate.dto.group_member.AddGroupMemberDto;
+import com.splitmate.dto.group_member.GroupMemberInfoDto;
 import com.splitmate.entity.Group;
 import com.splitmate.entity.GroupMember;
 import com.splitmate.entity.User;
 import com.splitmate.service.GroupMemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.splitmate.service.GroupService;
+import com.splitmate.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GroupMemberServiceImpl implements GroupMemberService {
 
-    @Autowired
-    private  GroupRepository groupRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private GroupMemberRepository memberRepository;
+    private final GroupService groupService;
+    private final UserService userService;
+    private final GroupMemberDao memberRepository;
+
+    public GroupMemberServiceImpl(GroupService groupService,
+                                  UserService userService,
+                                  GroupMemberDao memberRepository) {
+        this.groupService = groupService;
+        this.userService = userService;
+        this.memberRepository = memberRepository;
+    }
 
     @Override
-    public MemberResponse addMember(Long groupId, AddMemberRequest request) {
-        Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new RuntimeException("Group not found"));
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public GroupMemberInfoDto add(Long groupId, AddGroupMemberDto request) {
+
+        Group group = groupService.findById(groupId);
+        User user = userService.findById(request.getUserId());
 
         GroupMember member = new GroupMember();
         member.setGroup(group);
@@ -41,7 +43,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     }
 
     @Override
-    public List<MemberResponse> getMembers(Long groupId) {
+    public List<GroupMemberInfoDto> get(Long groupId) {
 
         List<GroupMember> members = memberRepository.findByGroupId(groupId);
 
@@ -52,12 +54,12 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
 
     @Override
-    public void removeMember(Long groupId, Long memberId) {
+    public void remove(Long groupId, Long memberId) {
         memberRepository.deleteById(memberId);
     }
 
-    private MemberResponse toResponse(GroupMember gm) {
-        MemberResponse res = new MemberResponse();
+    private GroupMemberInfoDto toResponse(GroupMember gm) {
+        GroupMemberInfoDto res = new GroupMemberInfoDto();
         res.setId(gm.getId());
         res.setGroupId(gm.getGroup().getId());
         res.setUserId(gm.getUser().getId());

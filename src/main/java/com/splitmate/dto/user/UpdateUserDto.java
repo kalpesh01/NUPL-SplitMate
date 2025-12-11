@@ -1,9 +1,9 @@
-package com.splitmate.dto.request;
+package com.splitmate.dto.user;
 
 import lombok.Data;
 
 @Data
-public class UpdateUserRequest {
+public class UpdateUserDto {
     private String name;
     private String email;
 }

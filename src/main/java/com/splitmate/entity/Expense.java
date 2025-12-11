@@ -30,12 +30,12 @@ public class Expense {
     private LocalDate expenseDate;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "ref_group")
     private Group group;
 
     @ManyToOne
-    @JoinColumn(name = "paid_by")
-    private User paidBy;
+    @JoinColumn(name = "ref_user")
+    private User paidOutBy;
 
     @OneToMany(mappedBy = "expense",
             cascade = CascadeType.ALL,

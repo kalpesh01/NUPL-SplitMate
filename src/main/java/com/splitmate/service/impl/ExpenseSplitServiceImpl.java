@@ -1,12 +1,11 @@
 package com.splitmate.service.impl;
 
-import com.splitmate.dao.ExpenseRepository;
-import com.splitmate.dto.request.UpdateSplitRequest;
-import com.splitmate.dto.response.SplitResponse;
+import com.splitmate.dto.expense_split.UpdateExpenseSplitDto;
+import com.splitmate.dto.expense_split.ExpenseSplitInfoDto;
 import com.splitmate.entity.ExpenseSplit;
-import com.splitmate.dao.ExpenseSplitRepository;
+import com.splitmate.dao.ExpenseSplitDao;
+import com.splitmate.enums.PaymentStatus;
 import com.splitmate.service.ExpenseSplitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,44 +13,50 @@ import java.util.List;
 @Service
 public class ExpenseSplitServiceImpl implements ExpenseSplitService {
 
-    @Autowired
-    private ExpenseRepository expenseRepository;
-    @Autowired
-    private ExpenseSplitRepository splitRepository;
+    private final ExpenseSplitDao expenseSplitDao;
+
+    public ExpenseSplitServiceImpl(ExpenseSplitDao expenseSplitDao){
+        this.expenseSplitDao = expenseSplitDao;
+    }
 
     @Override
-    public List<SplitResponse> getSplits(Long expenseId) {
-        return splitRepository.findAll().stream()
+    public ExpenseSplitInfoDto create(ExpenseSplit expenseSplit) {
+        return toResponse(expenseSplitDao.save(expenseSplit));
+    }
+
+    @Override
+    public List<ExpenseSplitInfoDto> get(Long expenseId) {
+        return expenseSplitDao.findAll().stream()
                 .filter(s -> s.getExpense().getId().equals(expenseId))
                 .map(this::toResponse)
                 .toList();
     }
 
     @Override
-    public SplitResponse updateSplit(Long expenseId, Long splitId, UpdateSplitRequest req) {
+    public ExpenseSplitInfoDto update(Long expenseId, Long splitId, UpdateExpenseSplitDto req) {
 
-        ExpenseSplit split = splitRepository.findById(splitId)
+        ExpenseSplit split = expenseSplitDao.findById(splitId)
                 .orElseThrow(() -> new RuntimeException("Split not found"));
 
         split.setSplitAmount(req.getShareAmount());
-        split.setPaymentStatus(req.getPaymentStatus());
-        splitRepository.save(split);
+        split.setPaymentStatus(PaymentStatus.valueOf(req.getPaymentStatus().toUpperCase()));
+        expenseSplitDao.save(split);
 
         return toResponse(split);
     }
 
     @Override
-    public void deleteSplit(Long expenseId, Long splitId) {
-        splitRepository.deleteById(splitId);
+    public void delete(Long expenseId, Long splitId) {
+        expenseSplitDao.deleteById(splitId);
     }
 
-    private SplitResponse toResponse(ExpenseSplit split) {
-        SplitResponse res = new SplitResponse();
+    private ExpenseSplitInfoDto toResponse(ExpenseSplit split) {
+        ExpenseSplitInfoDto res = new ExpenseSplitInfoDto();
         res.setId(split.getId());
         res.setExpenseId(split.getExpense().getId());
-        res.setUserId(split.getUser().getId());
+        res.setUserId(split.getOwnBy().getId());
         res.setShareAmount(split.getSplitAmount());
-        res.setPaymentStatus(split.getPaymentStatus());
+        res.setPaymentStatus(split.getPaymentStatus().toString().toUpperCase());
         return res;
     }
 }

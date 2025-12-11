@@ -1,15 +1,15 @@
 package com.splitmate.service.impl;
 
 import com.splitmate.dao.*;
-import com.splitmate.dto.request.ExpenseRequest;
-import com.splitmate.dto.response.ExpenseResponse;
+import com.splitmate.dto.expense.CreateExpenseDto;
+import com.splitmate.dto.expense.ExpenseInfoDto;
+import com.splitmate.dto.expense.UpdateExpenseDto;
 import com.splitmate.entity.Expense;
 import com.splitmate.entity.ExpenseSplit;
 import com.splitmate.entity.Group;
 import com.splitmate.entity.User;
-import com.splitmate.service.ExpenseService;
-import com.splitmate.service.GroupMemberService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.splitmate.enums.PaymentStatus;
+import com.splitmate.service.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,41 +17,44 @@ import java.util.List;
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
-    @Autowired
-    private GroupRepository groupRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private ExpenseRepository expenseRepository;
-    @Autowired
-    private GroupMemberRepository groupMemberRepository;
-    @Autowired
-    private ExpenseSplitRepository expenseSplitRepository;
+    private final UserService userService;
+
+    private final ExpenseDao expenseDao;
+
+    private final ExpenseSplitService expenseSplitService;
+
+    private final GroupService groupService;
+
+    public ExpenseServiceImpl(UserService userService, ExpenseDao expenseDao, ExpenseSplitService expenseSplitService,
+                              GroupService groupService){
+        this.groupService = groupService;
+        this.userService = userService;
+        this.expenseDao = expenseDao;
+        this.expenseSplitService = expenseSplitService;
+    }
 
     @Override
-    public ExpenseResponse createExpense(Long groupId, ExpenseRequest req) {
+    public ExpenseInfoDto create(Long groupId, CreateExpenseDto req) {
 
-        Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new RuntimeException("Group not found"));
+        Group group = groupService.findById(groupId);
 
-        User paidBy = userRepository.findById(req.getPaidBy())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User paidBy = userService.findById(req.getPaidBy());
 
         Expense expense = new Expense();
         expense.setGroup(group);
-        expense.setPaidBy(paidBy);
+        expense.setPaidOutBy(paidBy);
         expense.setAmount(req.getAmount());
         expense.setDescription(req.getDescription());
         expense.setExpenseDate(req.getExpenseDate());
 
-        expenseRepository.save(expense);
+        expenseDao.save(expense);
 
         if (req.getUsersId() == null || req.getUsersId().isEmpty()) {
             throw new RuntimeException("Users list cannot be empty for splitting");
         }
 
         List<User> users =
-                userRepository.findAllById(req.getUsersId());
+                userService.findAll();
 
         if (users.size() != req.getUsersId().size()) {
             throw new RuntimeException("Invalid userId in usersId list");
@@ -62,57 +65,56 @@ public class ExpenseServiceImpl implements ExpenseService {
         for (User u : users) {
             ExpenseSplit split = new ExpenseSplit();
             split.setExpense(expense);
-            split.setUser(u);
+            split.setOwnBy(u);
             split.setSplitAmount(splitAmount);
-            split.setPaymentStatus("Pending");
+            split.setPaymentStatus(PaymentStatus.PENDING);
 
-            expenseSplitRepository.save(split);
+            expenseSplitService.create(split);
         }
         return toResponse(expense);
     }
 
     @Override
-    public List<ExpenseResponse> getExpensesByGroup(Long groupId) {
-        return expenseRepository.findAll().stream()
+    public List<ExpenseInfoDto> getByGroup(Long groupId) {
+        return expenseDao.findAll().stream()
                 .filter(e -> e.getGroup().getId().equals(groupId))
                 .map(this::toResponse)
                 .toList();
     }
 
     @Override
-    public ExpenseResponse getExpenseById(Long expenseId) {
-        Expense e = expenseRepository.findById(expenseId)
+    public ExpenseInfoDto get(Long expenseId) {
+        Expense e = expenseDao.findById(expenseId)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
         return toResponse(e);
     }
 
     @Override
-    public ExpenseResponse updateExpense(Long expenseId, ExpenseRequest req) {
-        Expense e = expenseRepository.findById(expenseId)
+    public ExpenseInfoDto update(Long expenseId, UpdateExpenseDto req) {
+        Expense e = expenseDao.findById(expenseId)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
 
-        User paidBy = userRepository.findById(req.getPaidBy())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User paidBy = userService.findById(req.getPaidBy());
 
-        e.setPaidBy(paidBy);
+        e.setPaidOutBy(paidBy);
         e.setAmount(req.getAmount());
         e.setDescription(req.getDescription());
         e.setExpenseDate(req.getExpenseDate());
 
-        expenseRepository.save(e);
+        expenseDao.save(e);
         return toResponse(e);
     }
 
     @Override
-    public void deleteExpense(Long expenseId) {
-        expenseRepository.deleteById(expenseId);
+    public void delete(Long expenseId) {
+        expenseDao.deleteById(expenseId);
     }
 
-    private ExpenseResponse toResponse(Expense e) {
-        ExpenseResponse res = new ExpenseResponse();
+    private ExpenseInfoDto toResponse(Expense e) {
+        ExpenseInfoDto res = new ExpenseInfoDto();
         res.setId(e.getId());
         res.setGroupId(e.getGroup().getId());
-        res.setPaidBy(e.getPaidBy().getId());
+        res.setPaidBy(e.getPaidOutBy().getId());
         res.setAmount(e.getAmount());
         res.setDescription(e.getDescription());
         res.setExpenseDate(e.getExpenseDate());

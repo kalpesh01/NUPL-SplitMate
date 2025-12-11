@@ -1,12 +1,11 @@
 package com.splitmate.service.impl;
 
 import com.splitmate.entity.User;
-import com.splitmate.dao.UserRepository;
-import com.splitmate.dto.request.CreateUserRequest;
-import com.splitmate.dto.request.UpdateUserRequest;
-import com.splitmate.dto.response.UserResponse;
+import com.splitmate.dao.UserDao;
+import com.splitmate.dto.user.CreateUserDto;
+import com.splitmate.dto.user.UpdateUserDto;
+import com.splitmate.dto.user.UserInfoDto;
 import com.splitmate.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,12 +13,15 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserDao userDao;
+
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
-    public UserResponse createUser(CreateUserRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+    public UserInfoDto create(CreateUserDto request) {
+        if (userDao.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
 
@@ -27,55 +29,68 @@ public class UserServiceImpl implements UserService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
 
-        userRepository.save(user);
+        userDao.save(user);
 
         return mapToResponse(user);
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
+    public List<UserInfoDto> getAll() {
+        return userDao.findAll()
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserResponse getUser(Long id) {
-        User user = userRepository.findById(id)
+    public UserInfoDto get(Long id) {
+        User user = userDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return mapToResponse(user);
     }
 
     @Override
-    public UserResponse updateUser(Long id, UpdateUserRequest request) {
-        User user = userRepository.findById(id)
+    public UserInfoDto update(Long id, UpdateUserDto request) {
+        User user = userDao.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
 
-        userRepository.save(user);
+        userDao.save(user);
 
         return mapToResponse(user);
     }
 
     @Override
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
+    public void delete(Long id) {
+        if (!userDao.existsById(id)) {
             throw new RuntimeException("User not found");
         }
 
-        userRepository.deleteById(id);
+        userDao.deleteById(id);
     }
 
-    private UserResponse mapToResponse(User user) {
-        UserResponse res = new UserResponse();
+    private UserInfoDto mapToResponse(User user) {
+        UserInfoDto res = new UserInfoDto();
         res.setId(user.getId());
         res.setName(user.getName());
         res.setEmail(user.getEmail());
         return res;
     }
+
+    @Override
+    public User findById(Long id) {
+        return userDao.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userDao.findAll();
+    }
+
+
 }
 

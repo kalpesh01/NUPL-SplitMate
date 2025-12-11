@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+    <changeSet id="1" author="nit208">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="expenses"/>
+            </not>
+        </preConditions>
+        <createTable tableName="expenses">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(255)"/>
+
+            <column name="amount" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="expense_date" type="DATE"/>
+
+            <column name="ref_group" type="BIGINT"/>
+
+            <column name="ref_user" type="BIGINT"/>
+
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="expenses"
+                baseColumnNames="ref_group"
+                referencedTableName="user_groups"
+                referencedColumnNames="id"
+                constraintName="fk_expense_group"/>
+
+        <addForeignKeyConstraint
+                baseTableName="expenses"
+                baseColumnNames="ref_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_expense_user"/>
+
+    </changeSet>
+</databaseChangeLog>

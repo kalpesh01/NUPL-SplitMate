@@ -1,22 +1,22 @@
 package com.splitmate.service;
 
-import com.splitmate.dto.request.ExpenseRequest;
-import com.splitmate.dto.response.ExpenseResponse;
-import com.splitmate.entity.Expense;
+import com.splitmate.dto.expense.CreateExpenseDto;
+import com.splitmate.dto.expense.ExpenseInfoDto;
+import com.splitmate.dto.expense.UpdateExpenseDto;
 
 import java.util.List;
 
 public interface ExpenseService {
 
-    ExpenseResponse createExpense(Long groupId, ExpenseRequest request);
+    ExpenseInfoDto create(Long groupId, CreateExpenseDto request);
 
-    List<ExpenseResponse> getExpensesByGroup(Long groupId);
+    List<ExpenseInfoDto> getByGroup(Long groupId);
 
-    ExpenseResponse getExpenseById(Long expenseId);
+    ExpenseInfoDto get(Long expenseId);
 
-    ExpenseResponse updateExpense(Long expenseId, ExpenseRequest request);
+    ExpenseInfoDto update(Long expenseId, UpdateExpenseDto request);
 
-    void deleteExpense(Long expenseId);
+    void delete(Long expenseId);
 }
 
 

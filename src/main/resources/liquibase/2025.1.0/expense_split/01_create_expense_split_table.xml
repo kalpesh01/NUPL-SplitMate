@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="1" author="nit208">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="expense_splits"/>
+            </not>
+        </preConditions>
+        <createTable tableName="expense_splits">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="split_amount" type="DOUBLE"/>
+
+            <column name="payment_status" type="VARCHAR(50)"/>
+
+            <column name="ref_expense" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ref_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addUniqueConstraint
+                tableName="expense_splits"
+                columnNames="ref_expense,ref_user"
+                constraintName="uq_expense_user"/>
+
+        <addForeignKeyConstraint
+                baseTableName="expense_splits"
+                baseColumnNames="ref_expense"
+                referencedTableName="expenses"
+                referencedColumnNames="id"
+                constraintName="fk_split_expense"/>
+
+        <addForeignKeyConstraint
+                baseTableName="expense_splits"
+                baseColumnNames="ref_user"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_split_user"/>
+    </changeSet>
+</databaseChangeLog>

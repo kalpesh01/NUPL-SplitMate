@@ -1,11 +1,9 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.ExpenseRequest;
-import com.splitmate.dto.response.ExpenseResponse;
-import com.splitmate.entity.Expense;
+import com.splitmate.dto.expense.CreateExpenseDto;
+import com.splitmate.dto.expense.ExpenseInfoDto;
+import com.splitmate.dto.expense.UpdateExpenseDto;
 import com.splitmate.service.ExpenseService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,39 +12,41 @@ import java.util.List;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
 
-    @Autowired
-    private ExpenseService service;
+    private final ExpenseService service;
+
+    public ExpenseController(ExpenseService service) {
+        this.service = service;
+    }
 
     @PostMapping("/groups/{groupId}")
-    public ResponseEntity<ExpenseResponse> create(
+    public ExpenseInfoDto create(
             @PathVariable Long groupId,
-            @RequestBody ExpenseRequest request) {
-        return ResponseEntity.ok(service.createExpense(groupId, request));
+            @RequestBody CreateExpenseDto request) {
+        return service.create(groupId, request);
     }
 
     @GetMapping("/groups/{groupId}")
-    public ResponseEntity<List<ExpenseResponse>> getAll(
+    public List<ExpenseInfoDto> getAll(
             @PathVariable Long groupId) {
-        return ResponseEntity.ok(service.getExpensesByGroup(groupId));
+        return service.getByGroup(groupId);
     }
 
     @GetMapping("/{expenseId}")
-    public ResponseEntity<ExpenseResponse> getById(
+    public ExpenseInfoDto getById(
             @PathVariable Long expenseId) {
-        return ResponseEntity.ok(service.getExpenseById(expenseId));
+        return service.get(expenseId);
     }
 
     @PutMapping("/{expenseId}")
-    public ResponseEntity<ExpenseResponse> update(
+    public ExpenseInfoDto update(
             @PathVariable Long expenseId,
-            @RequestBody ExpenseRequest request) {
-        return ResponseEntity.ok(service.updateExpense(expenseId, request));
+            @RequestBody UpdateExpenseDto request) {
+        return service.update(expenseId, request);
     }
 
     @DeleteMapping("/{expenseId}")
-    public ResponseEntity<Void> delete(@PathVariable Long expenseId) {
-        service.deleteExpense(expenseId);
-        return ResponseEntity.noContent().build();
+    public void delete(@PathVariable Long expenseId) {
+        service.delete(expenseId);
     }
 }
 

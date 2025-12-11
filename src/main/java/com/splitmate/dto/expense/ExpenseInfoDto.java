@@ -1,18 +1,18 @@
-package com.splitmate.dto.request;
+package com.splitmate.dto.expense;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
-public class ExpenseRequest {
+public class ExpenseInfoDto {
+    private Long id;
+    private Long groupId;
     private Long paidBy;
     private Double amount;
     private String description;
     private LocalDate expenseDate;
-    private List<Long> usersId;
 }
 

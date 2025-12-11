@@ -1,10 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.AddMemberRequest;
-import com.splitmate.dto.response.MemberResponse;
+import com.splitmate.dto.group_member.AddGroupMemberDto;
+import com.splitmate.dto.group_member.GroupMemberInfoDto;
 import com.splitmate.service.GroupMemberService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,27 +11,29 @@ import java.util.List;
 @RequestMapping("/api/members")
 public class GroupMemberController {
 
-    @Autowired
-    private GroupMemberService service;
+    private final GroupMemberService groupMemberService;
+
+    public GroupMemberController(GroupMemberService groupMemberService) {
+        this.groupMemberService = groupMemberService;
+    }
 
     @PostMapping("/group/{groupId}/member")
-    public ResponseEntity<MemberResponse> addMember(
+    public GroupMemberInfoDto addMember(
             @PathVariable Long groupId,
-            @RequestBody AddMemberRequest request) {
-        return ResponseEntity.ok(service.addMember(groupId, request));
+            @RequestBody AddGroupMemberDto request) {
+        return groupMemberService.add(groupId, request);
     }
 
     @GetMapping("/group/{groupId}/member")
-    public ResponseEntity<List<MemberResponse>> getMembers(@PathVariable Long groupId) {
-        return ResponseEntity.ok(service.getMembers(groupId));
+    public List<GroupMemberInfoDto> getMembers(@PathVariable Long groupId) {
+        return groupMemberService.get(groupId);
     }
 
     @DeleteMapping("/group/{groupId}/member/{memberId}")
-    public ResponseEntity<Void> removeMember(
+    public void removeMember(
             @PathVariable Long groupId,
             @PathVariable Long memberId) {
-        service.removeMember(groupId, memberId);
-        return ResponseEntity.noContent().build();
+        groupMemberService.remove(groupId, memberId);
     }
 }
 

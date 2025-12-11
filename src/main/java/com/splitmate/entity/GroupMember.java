@@ -6,8 +6,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "group_members", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"group_id", "user_id"})})
+@Table(name = "group_members")
 @Setter
 @Getter
 public class GroupMember {
@@ -17,10 +16,10 @@ public class GroupMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "ref_group")
     private Group group;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "ref_user")
     private User user;
 }

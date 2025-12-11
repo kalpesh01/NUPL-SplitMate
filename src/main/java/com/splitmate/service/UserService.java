@@ -1,21 +1,26 @@
 package com.splitmate.service;
 
-import com.splitmate.dto.request.CreateUserRequest;
-import com.splitmate.dto.request.UpdateUserRequest;
-import com.splitmate.dto.response.UserResponse;
+import com.splitmate.dto.user.CreateUserDto;
+import com.splitmate.dto.user.UpdateUserDto;
+import com.splitmate.dto.user.UserInfoDto;
+import com.splitmate.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserResponse createUser(CreateUserRequest request);
+    UserInfoDto create(CreateUserDto request);
 
-    List<UserResponse> getAllUsers();
+    List<UserInfoDto> getAll();
 
-    UserResponse getUser(Long id);
+    UserInfoDto get(Long id);
 
-    UserResponse updateUser(Long id, UpdateUserRequest request);
+    UserInfoDto update(Long id, UpdateUserDto request);
 
-    void deleteUser(Long id);
+    void delete(Long id);
+
+    User findById(Long id);
+
+    List<User> findAll();
 }
 

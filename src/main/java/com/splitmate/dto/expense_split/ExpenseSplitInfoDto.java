@@ -1,11 +1,11 @@
-package com.splitmate.dto.response;
+package com.splitmate.dto.expense_split;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SplitResponse {
+public class ExpenseSplitInfoDto {
     private Long id;
     private Long expenseId;
     private Long userId;

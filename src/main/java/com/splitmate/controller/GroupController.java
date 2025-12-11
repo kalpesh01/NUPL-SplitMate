@@ -1,9 +1,9 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.GroupRequest;
-import com.splitmate.dto.response.GroupResponse;
+import com.splitmate.dto.group.CreateGroupDto;
+import com.splitmate.dto.group.GroupInfoDto;
+import com.splitmate.dto.group.UpdateGroupDto;
 import com.splitmate.service.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,34 +13,36 @@ import java.util.List;
 @RequestMapping("/api/groups")
 public class GroupController {
 
-    @Autowired
-    private GroupService groupService;
+    private final GroupService groupService;
+
+    public GroupController(GroupService service) {
+        this.groupService = service;
+    }
 
     @PostMapping
-    public ResponseEntity<GroupResponse> create(@RequestBody GroupRequest request) {
-        return ResponseEntity.ok(groupService.createGroup(request));
+    public GroupInfoDto create(@RequestBody CreateGroupDto request) {
+        return groupService.create(request);
     }
 
     @GetMapping
-    public ResponseEntity<List<GroupResponse>> getAll() {
-        return ResponseEntity.ok(groupService.getAllGroups());
+    public List<GroupInfoDto> getAll() {
+        return groupService.getAll();
     }
 
     @GetMapping("/{groupId}")
-    public ResponseEntity<GroupResponse> getById(@PathVariable Long groupId) {
-        return ResponseEntity.ok(groupService.getGroupById(groupId));
+    public GroupInfoDto getById(@PathVariable Long groupId) {
+        return groupService.get(groupId);
     }
 
     @PutMapping("/{groupId}")
-    public ResponseEntity<GroupResponse> update(
+    public GroupInfoDto update(
             @PathVariable Long groupId,
-            @RequestBody GroupRequest request) {
-        return ResponseEntity.ok(groupService.updateGroup(groupId, request));
+            @RequestBody UpdateGroupDto request) {
+        return groupService.update(groupId, request);
     }
 
     @DeleteMapping("/{groupId}")
-    public ResponseEntity<Void> delete(@PathVariable Long groupId) {
-        groupService.deleteGroup(groupId);
-        return ResponseEntity.noContent().build();
+    public void delete(@PathVariable Long groupId) {
+        groupService.delete(groupId);
     }
 }
