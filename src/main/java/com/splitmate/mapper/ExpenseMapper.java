@@ -1,11 +1,11 @@
 package com.splitmate.mapper;
 
-import com.splitmate.dto.expense.CreateExpenseDto;
-import com.splitmate.dto.expense.ExpenseInfoDto;
-import com.splitmate.dto.expense.UpdateExpenseDto;
-import com.splitmate.entity.Expense;
-import com.splitmate.entity.Group;
-import com.splitmate.entity.User;
+import com.splitmate.db.dto.expense.CreateExpenseDto;
+import com.splitmate.db.dto.expense.ExpenseInfoDto;
+import com.splitmate.db.dto.expense.UpdateExpenseDto;
+import com.splitmate.db.entity.ExpenseEntity;
+import com.splitmate.db.entity.GroupEntity;
+import com.splitmate.db.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -14,19 +14,19 @@ import org.mapstruct.MappingTarget;
 public interface ExpenseMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "group", source = "group")
+    @Mapping(target = "groupEntity", source = "groupEntity")
     @Mapping(target = "paidOutBy", source = "paidBy")
     @Mapping(target = "splits", ignore = true)
-    Expense dtoToEntity(CreateExpenseDto dto, Group group, User paidBy);
+    ExpenseEntity dtoToEntity(CreateExpenseDto dto, GroupEntity groupEntity, UserEntity paidBy);
 
-    @Mapping(source = "group.id", target = "groupId")
+    @Mapping(source = "groupEntity.id", target = "groupId")
     @Mapping(source = "paidOutBy.id", target = "paidBy")
-    ExpenseInfoDto entityToDto(Expense expense);
+    ExpenseInfoDto entityToDto(ExpenseEntity expenseEntity);
 
     @Mapping(target = "paidOutBy", source = "paidBy")
     @Mapping(target = "splits", ignore = true)
     void updateDtoToEntity(UpdateExpenseDto dto,
-                      User paidBy,
-                      @MappingTarget Expense expense);
+                      UserEntity paidBy,
+                      @MappingTarget ExpenseEntity expenseEntity);
 }
 

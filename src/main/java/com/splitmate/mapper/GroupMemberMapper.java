@@ -1,10 +1,10 @@
 package com.splitmate.mapper;
 
-import com.splitmate.dto.group_member.AddGroupMemberDto;
-import com.splitmate.dto.group_member.GroupMemberInfoDto;
-import com.splitmate.entity.Group;
-import com.splitmate.entity.GroupMember;
-import com.splitmate.entity.User;
+import com.splitmate.db.dto.group_member.AddGroupMemberDto;
+import com.splitmate.db.dto.group_member.GroupMemberInfoDto;
+import com.splitmate.db.entity.GroupEntity;
+import com.splitmate.db.entity.GroupMemberEntity;
+import com.splitmate.db.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -12,12 +12,12 @@ import org.mapstruct.Mapping;
 public interface GroupMemberMapper {
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "group", source = "group")
+    @Mapping(target = "groupEntity", source = "groupEntity")
     @Mapping(target = "user", source = "user")
-    GroupMember dtoToEntity(AddGroupMemberDto dto, Group group, User user);
+    GroupMemberEntity dtoToEntity(AddGroupMemberDto dto, GroupEntity groupEntity, UserEntity user);
 
     @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "group.id", target = "groupId")
-    GroupMemberInfoDto entityToDto(GroupMember entity);
+    @Mapping(source = "groupEntity.id", target = "groupId")
+    GroupMemberInfoDto entityToDto(GroupMemberEntity entity);
 }
 

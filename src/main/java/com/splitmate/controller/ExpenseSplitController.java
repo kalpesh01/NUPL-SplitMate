@@ -1,8 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.expense_split.UpdateExpenseSplitDto;
-import com.splitmate.dto.expense_split.ExpenseSplitInfoDto;
-import com.splitmate.service.ExpenseSplitService;
+import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDto;
+import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDto;
+import com.splitmate.buissness.service.ExpenseSplitService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,9 +1,9 @@
 package com.splitmate.mapper;
 
-import com.splitmate.dto.user.CreateUserDto;
-import com.splitmate.dto.user.UpdateUserDto;
-import com.splitmate.dto.user.UserInfoDto;
-import com.splitmate.entity.User;
+import com.splitmate.db.dto.user.CreateUserDto;
+import com.splitmate.db.dto.user.UpdateUserDto;
+import com.splitmate.db.dto.user.UserInfoDto;
+import com.splitmate.db.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -16,14 +16,14 @@ public interface UserMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "memberships", ignore = true)
     @Mapping(target = "expensesPaid", ignore = true)
-    User dtoToEntity(CreateUserDto dto);
+    UserEntity dtoToEntity(CreateUserDto dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "memberships", ignore = true)
     @Mapping(target = "expensesPaid", ignore = true)
-    void updateDtoToEntity(UpdateUserDto dto, @MappingTarget User entity);
+    void updateDtoToEntity(UpdateUserDto dto, @MappingTarget UserEntity entity);
 
-    UserInfoDto entityToDto(User user);
+    UserInfoDto entityToDto(UserEntity user);
 
 }
 

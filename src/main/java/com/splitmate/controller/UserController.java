@@ -1,14 +1,11 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.user.CreateUserDto;
-import com.splitmate.dto.user.UpdateUserDto;
-import com.splitmate.dto.user.UserInfoDto;
-import com.splitmate.service.GroupMemberService;
-import com.splitmate.service.UserService;
+import com.splitmate.db.dto.user.CreateUserDto;
+import com.splitmate.db.dto.user.UpdateUserDto;
+import com.splitmate.db.dto.user.UserInfoDto;
+import com.splitmate.buissness.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

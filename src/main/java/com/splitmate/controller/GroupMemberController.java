@@ -1,8 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.group_member.AddGroupMemberDto;
-import com.splitmate.dto.group_member.GroupMemberInfoDto;
-import com.splitmate.service.GroupMemberService;
+import com.splitmate.db.dto.group_member.AddGroupMemberDto;
+import com.splitmate.db.dto.group_member.GroupMemberInfoDto;
+import com.splitmate.buissness.service.GroupMemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,11 +1,10 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.group.CreateGroupDto;
-import com.splitmate.dto.group.GroupInfoDto;
-import com.splitmate.dto.group.UpdateGroupDto;
-import com.splitmate.service.GroupService;
+import com.splitmate.db.dto.group.CreateGroupDto;
+import com.splitmate.db.dto.group.GroupInfoDto;
+import com.splitmate.db.dto.group.UpdateGroupDto;
+import com.splitmate.buissness.service.GroupService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

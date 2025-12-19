@@ -1,9 +1,9 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.expense.CreateExpenseDto;
-import com.splitmate.dto.expense.ExpenseInfoDto;
-import com.splitmate.dto.expense.UpdateExpenseDto;
-import com.splitmate.service.ExpenseService;
+import com.splitmate.db.dto.expense.CreateExpenseDto;
+import com.splitmate.db.dto.expense.ExpenseInfoDto;
+import com.splitmate.db.dto.expense.UpdateExpenseDto;
+import com.splitmate.buissness.service.ExpenseService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
