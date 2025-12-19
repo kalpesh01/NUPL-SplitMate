@@ -6,10 +6,10 @@ import com.splitmate.dto.group_member.GroupMemberInfoDto;
 import java.util.List;
 
 public interface GroupMemberService {
-    GroupMemberInfoDto add(Long groupId, AddGroupMemberDto request);
+    GroupMemberInfoDto add(final Long groupId, final AddGroupMemberDto request);
 
-    List<GroupMemberInfoDto> get(Long groupId);
+    List<GroupMemberInfoDto> get(final Long groupId);
 
-    void remove(Long groupId, Long memberId);
+    void remove(final Long groupId, final Long memberId);
 }
 

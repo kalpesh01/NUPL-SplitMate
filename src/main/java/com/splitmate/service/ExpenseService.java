@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ExpenseService {
 
-    ExpenseInfoDto create(Long groupId, CreateExpenseDto request);
+    ExpenseInfoDto create(final Long groupId, final CreateExpenseDto request);
 
-    List<ExpenseInfoDto> getByGroup(Long groupId);
+    List<ExpenseInfoDto> getByGroup(final Long groupId);
 
-    ExpenseInfoDto get(Long expenseId);
+    ExpenseInfoDto get(final Long expenseId);
 
-    ExpenseInfoDto update(Long expenseId, UpdateExpenseDto request);
+    ExpenseInfoDto update(final Long expenseId, UpdateExpenseDto request);
 
-    void delete(Long expenseId);
+    void delete(final Long expenseId);
 }
 
 

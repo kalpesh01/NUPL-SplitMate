@@ -1,5 +1,6 @@
 package com.splitmate.dto.expense_split;
 
+import com.splitmate.enums.PaymentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +8,13 @@ import lombok.Setter;
 @Setter
 public class ExpenseSplitInfoDto {
     private Long id;
+
+    private double splitAmount;
+
+    private PaymentStatus paymentStatus;
+
     private Long expenseId;
+
     private Long userId;
-    private Double shareAmount;
-    private String paymentStatus;
 }
 

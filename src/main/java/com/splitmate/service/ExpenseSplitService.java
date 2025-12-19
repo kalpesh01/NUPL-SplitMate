@@ -7,14 +7,14 @@ import com.splitmate.entity.ExpenseSplit;
 import java.util.List;
 
 public interface ExpenseSplitService {
-
+    
     ExpenseSplitInfoDto create(ExpenseSplit expenseSplit);
 
-    List<ExpenseSplitInfoDto> get(Long expenseId);
+    List<ExpenseSplitInfoDto> get(final Long expenseId);
 
-    ExpenseSplitInfoDto update(Long expenseId, Long splitId, UpdateExpenseSplitDto req);
+    ExpenseSplitInfoDto update(final Long expenseId, final Long splitId, final UpdateExpenseSplitDto req);
 
-    void delete(Long expenseId, Long splitId);
+    void delete(final Long expenseId, final Long splitId);
 }
 
 

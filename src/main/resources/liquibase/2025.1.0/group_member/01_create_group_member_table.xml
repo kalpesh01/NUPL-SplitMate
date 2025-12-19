@@ -8,10 +8,10 @@
     <changeSet id="1" author="nit208">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="group_members"/>
+                <tableExists tableName="group_member"/>
             </not>
         </preConditions>
-        <createTable tableName="group_members">
+        <createTable tableName="group_member">
 
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -28,21 +28,21 @@
         </createTable>
 
         <addUniqueConstraint
-                tableName="group_members"
+                tableName="group_member"
                 columnNames="ref_group,ref_user"
                 constraintName="uq_group_user"/>
 
         <addForeignKeyConstraint
-                baseTableName="group_members"
+                baseTableName="group_member"
                 baseColumnNames="ref_group"
-                referencedTableName="user_groups"
+                referencedTableName="user_group"
                 referencedColumnNames="id"
                 constraintName="fk_groupmembers_group"/>
 
         <addForeignKeyConstraint
-                baseTableName="group_members"
+                baseTableName="group_member"
                 baseColumnNames="ref_user"
-                referencedTableName="users"
+                referencedTableName="user"
                 referencedColumnNames="id"
                 constraintName="fk_groupmembers_user"/>
     </changeSet>

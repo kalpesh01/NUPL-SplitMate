@@ -5,59 +5,50 @@ import com.splitmate.dto.expense_split.ExpenseSplitInfoDto;
 import com.splitmate.entity.ExpenseSplit;
 import com.splitmate.dao.ExpenseSplitDao;
 import com.splitmate.enums.PaymentStatus;
+import com.splitmate.mapper.ExpenseSplitMapper;
 import com.splitmate.service.ExpenseSplitService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ExpenseSplitServiceImpl implements ExpenseSplitService {
 
     private final ExpenseSplitDao expenseSplitDao;
-
-    public ExpenseSplitServiceImpl(ExpenseSplitDao expenseSplitDao){
-        this.expenseSplitDao = expenseSplitDao;
-    }
+    private final ExpenseSplitMapper expenseSplitMapper;
 
     @Override
     public ExpenseSplitInfoDto create(ExpenseSplit expenseSplit) {
-        return toResponse(expenseSplitDao.save(expenseSplit));
+        return expenseSplitMapper.entityToDto(expenseSplitDao.save(expenseSplit));
     }
 
     @Override
-    public List<ExpenseSplitInfoDto> get(Long expenseId) {
-        return expenseSplitDao.findAll().stream()
+    public List<ExpenseSplitInfoDto> get(final Long expenseId) {
+        List<ExpenseSplitInfoDto> list = expenseSplitDao.findAll().stream()
                 .filter(s -> s.getExpense().getId().equals(expenseId))
-                .map(this::toResponse)
+                .map(expenseSplitMapper::entityToDto)
                 .toList();
+
+        return list;
     }
 
     @Override
-    public ExpenseSplitInfoDto update(Long expenseId, Long splitId, UpdateExpenseSplitDto req) {
+    public ExpenseSplitInfoDto update(final Long expenseId, final Long splitId, final UpdateExpenseSplitDto updateExpenseSplitDto) {
 
         ExpenseSplit split = expenseSplitDao.findById(splitId)
                 .orElseThrow(() -> new RuntimeException("Split not found"));
 
-        split.setSplitAmount(req.getShareAmount());
-        split.setPaymentStatus(PaymentStatus.valueOf(req.getPaymentStatus().toUpperCase()));
+        expenseSplitMapper.updateDtoToEntity(updateExpenseSplitDto, split);
         expenseSplitDao.save(split);
 
-        return toResponse(split);
+        return expenseSplitMapper.entityToDto(split);
     }
 
     @Override
-    public void delete(Long expenseId, Long splitId) {
+    public void delete(final Long expenseId, final Long splitId) {
         expenseSplitDao.deleteById(splitId);
-    }
-
-    private ExpenseSplitInfoDto toResponse(ExpenseSplit split) {
-        ExpenseSplitInfoDto res = new ExpenseSplitInfoDto();
-        res.setId(split.getId());
-        res.setExpenseId(split.getExpense().getId());
-        res.setUserId(split.getOwnBy().getId());
-        res.setShareAmount(split.getSplitAmount());
-        res.setPaymentStatus(split.getPaymentStatus().toString().toUpperCase());
-        return res;
     }
 }
 

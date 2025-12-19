@@ -8,16 +8,16 @@ import com.splitmate.entity.Group;
 import java.util.List;
 
 public interface GroupService {
-    GroupInfoDto create(CreateGroupDto request);
+    GroupInfoDto create(final CreateGroupDto request);
 
     List<GroupInfoDto> getAll();
 
-    GroupInfoDto get(Long id);
+    GroupInfoDto get(final Long id);
 
-    GroupInfoDto update(Long id, UpdateGroupDto request);
+    GroupInfoDto update(final Long id, final UpdateGroupDto request);
 
-    void delete(Long id);
+    void delete(final Long id);
 
-    Group findById(Long id);
+    Group findById(final Long id);
 }
 

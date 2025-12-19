@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
 @Setter
 public class User {
@@ -32,4 +32,22 @@ public class User {
     @OneToMany(mappedBy = "paidOutBy")
     private List<Expense> expensesPaid;
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!this.getClass().isInstance(obj) && !obj.getClass().isInstance(this))
+            return false;
+
+        User other = (User) obj;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 40;
+    }
 }

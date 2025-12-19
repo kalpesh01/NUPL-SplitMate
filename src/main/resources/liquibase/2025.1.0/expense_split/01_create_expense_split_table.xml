@@ -8,10 +8,10 @@
     <changeSet id="1" author="nit208">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="expense_splits"/>
+                <tableExists tableName="expense_split"/>
             </not>
         </preConditions>
-        <createTable tableName="expense_splits">
+        <createTable tableName="expense_split">
 
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -32,21 +32,21 @@
         </createTable>
 
         <addUniqueConstraint
-                tableName="expense_splits"
+                tableName="expense_split"
                 columnNames="ref_expense,ref_user"
                 constraintName="uq_expense_user"/>
 
         <addForeignKeyConstraint
-                baseTableName="expense_splits"
+                baseTableName="expense_split"
                 baseColumnNames="ref_expense"
-                referencedTableName="expenses"
+                referencedTableName="expense"
                 referencedColumnNames="id"
                 constraintName="fk_split_expense"/>
 
         <addForeignKeyConstraint
-                baseTableName="expense_splits"
+                baseTableName="expense_split"
                 baseColumnNames="ref_user"
-                referencedTableName="users"
+                referencedTableName="user"
                 referencedColumnNames="id"
                 constraintName="fk_split_user"/>
     </changeSet>

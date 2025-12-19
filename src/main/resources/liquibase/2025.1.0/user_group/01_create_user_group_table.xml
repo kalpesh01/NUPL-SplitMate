@@ -8,10 +8,10 @@
     <changeSet id="1" author="nit208">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="user_groups"/>
+                <tableExists tableName="user_group"/>
             </not>
         </preConditions>
-        <createTable tableName="user_groups">
+        <createTable tableName="user_group">
 
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>

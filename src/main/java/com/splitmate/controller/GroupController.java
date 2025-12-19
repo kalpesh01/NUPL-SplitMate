@@ -4,6 +4,7 @@ import com.splitmate.dto.group.CreateGroupDto;
 import com.splitmate.dto.group.GroupInfoDto;
 import com.splitmate.dto.group.UpdateGroupDto;
 import com.splitmate.service.GroupService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,16 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/groups")
+@AllArgsConstructor
 public class GroupController {
 
     private final GroupService groupService;
 
-    public GroupController(GroupService service) {
-        this.groupService = service;
-    }
-
     @PostMapping
-    public GroupInfoDto create(@RequestBody CreateGroupDto request) {
+    public GroupInfoDto create(@RequestBody final CreateGroupDto request) {
         return groupService.create(request);
     }
 
@@ -30,19 +28,19 @@ public class GroupController {
     }
 
     @GetMapping("/{groupId}")
-    public GroupInfoDto getById(@PathVariable Long groupId) {
+    public GroupInfoDto getById(@PathVariable final Long groupId) {
         return groupService.get(groupId);
     }
 
     @PutMapping("/{groupId}")
     public GroupInfoDto update(
-            @PathVariable Long groupId,
-            @RequestBody UpdateGroupDto request) {
+            @PathVariable final Long groupId,
+            @RequestBody final UpdateGroupDto request) {
         return groupService.update(groupId, request);
     }
 
     @DeleteMapping("/{groupId}")
-    public void delete(@PathVariable Long groupId) {
+    public void delete(@PathVariable final Long groupId) {
         groupService.delete(groupId);
     }
 }

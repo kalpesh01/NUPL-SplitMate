@@ -5,90 +5,84 @@ import com.splitmate.dao.UserDao;
 import com.splitmate.dto.user.CreateUserDto;
 import com.splitmate.dto.user.UpdateUserDto;
 import com.splitmate.dto.user.UserInfoDto;
+import com.splitmate.enums.ErrorCodes;
+import com.splitmate.exception.error.ResourceNotFoundException;
+import com.splitmate.mapper.UserMapper;
 import com.splitmate.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
-
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private final UserMapper userMapper;
 
     @Override
-    public UserInfoDto create(CreateUserDto request) {
-        if (userDao.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+    public UserInfoDto create(final CreateUserDto createUserDto) {
+        if (userDao.existsByEmail(createUserDto.getEmail())) {
+            throw new ResourceNotFoundException(ErrorCodes.EMAIL_ALREADY_EXIST.getMessage());
         }
 
-        User user = new User();
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-
+        User user = userMapper.dtoToEntity(createUserDto);
         userDao.save(user);
 
-        return mapToResponse(user);
+        return userMapper.entityToDto(user);
     }
 
     @Override
     public List<UserInfoDto> getAll() {
         return userDao.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(userMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserInfoDto get(Long id) {
+    public UserInfoDto get(final Long id) {
         User user = userDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage()));
 
-        return mapToResponse(user);
+        return userMapper.entityToDto(user);
     }
 
     @Override
-    public UserInfoDto update(Long id, UpdateUserDto request) {
+    public UserInfoDto update(final Long id, final UpdateUserDto updateUserDto) {
         User user = userDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage()));
 
-        user.setName(request.getName());
-        user.setEmail(request.getEmail());
-
+        userMapper.updateDtoToEntity(updateUserDto,user);
         userDao.save(user);
 
-        return mapToResponse(user);
+        return userMapper.entityToDto(user);
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(final Long id) {
         if (!userDao.existsById(id)) {
-            throw new RuntimeException("User not found");
+            throw new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage());
         }
 
         userDao.deleteById(id);
     }
 
-    private UserInfoDto mapToResponse(User user) {
-        UserInfoDto res = new UserInfoDto();
-        res.setId(user.getId());
-        res.setName(user.getName());
-        res.setEmail(user.getEmail());
-        return res;
-    }
-
     @Override
-    public User findById(Long id) {
+    public User findById(final Long id) {
         return userDao.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage()));
     }
 
     @Override
     public List<User> findAll() {
         return userDao.findAll();
+    }
+
+    @Override
+    public List<User> findAllByIdIn(final List<Long> userIds) {
+        return userDao.findAllById(userIds);
     }
 
 

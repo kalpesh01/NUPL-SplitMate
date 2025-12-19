@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "expense_splits")
+@Table(name = "expense_split")
 @Getter
 @Setter
 public class ExpenseSplit {
@@ -30,6 +30,23 @@ public class ExpenseSplit {
     @JoinColumn(name = "ref_user")
     private User ownBy;
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!this.getClass().isInstance(obj) && !obj.getClass().isInstance(this))
+            return false;
 
+        ExpenseSplit other = (ExpenseSplit) obj;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 40;
+    }
 }
 

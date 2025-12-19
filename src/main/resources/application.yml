@@ -8,6 +8,22 @@ spring:
     username: sa
     password:
 
+
+  kafka:
+    bootstrap-servers: localhost:9992
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    consumer:
+      group-id: splitmate-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
   jpa:
     hibernate:
       ddl-auto: none
@@ -22,6 +38,8 @@ spring:
     enabled: true
     change-log: classpath:/liquibase/master.xml
 
-logging:
-  level:
-    liquibase: DEBUG
+#logging:
+#  level:
+#    liquibase: DEBUG
+
+

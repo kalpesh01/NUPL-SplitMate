@@ -9,18 +9,20 @@ import java.util.List;
 
 public interface UserService {
 
-    UserInfoDto create(CreateUserDto request);
+    UserInfoDto create(final CreateUserDto request);
 
     List<UserInfoDto> getAll();
 
-    UserInfoDto get(Long id);
+    UserInfoDto get(final Long id);
 
-    UserInfoDto update(Long id, UpdateUserDto request);
+    UserInfoDto update(final Long id, final UpdateUserDto request);
 
-    void delete(Long id);
+    void delete(final Long id);
 
-    User findById(Long id);
+    User findById(final Long id);
 
     List<User> findAll();
+
+    List<User> findAllByIdIn(final List<Long> userIds);
 }
 
