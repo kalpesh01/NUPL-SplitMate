@@ -4,45 +4,50 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
     <changeSet id="1" author="nit208">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="expense"/>
+                <tableExists tableName="expense_split"/>
             </not>
         </preConditions>
-        <createTable tableName="expense">
+        <createTable tableName="expense_split">
 
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="description" type="VARCHAR(255)"/>
+            <column name="split_amount" type="DOUBLE"/>
 
-            <column name="amount" type="DOUBLE">
+            <column name="payment_status" type="VARCHAR(50)"/>
+
+            <column name="ref_expense" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="expense_date" type="DATE"/>
-
-            <column name="ref_group" type="BIGINT"/>
-
-            <column name="ref_user" type="BIGINT"/>
+            <column name="ref_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
 
         </createTable>
 
-        <addForeignKeyConstraint
-                baseTableName="expense"
-                baseColumnNames="ref_group"
-                referencedTableName="user_group"
-                referencedColumnNames="id"
-                constraintName="fk_expense_group"/>
+        <addUniqueConstraint
+                tableName="expense_split"
+                columnNames="ref_expense,ref_user"
+                constraintName="uk_expense_ref_expense_ref_user"/>
 
         <addForeignKeyConstraint
-                baseTableName="expense"
+                baseTableName="expense_split"
+                baseColumnNames="ref_expense"
+                referencedTableName="expense"
+                referencedColumnNames="id"
+                constraintName="fk_expense_split_ref_expense"/>
+
+        <addForeignKeyConstraint
+                baseTableName="expense_split"
                 baseColumnNames="ref_user"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                constraintName="fk_expense_user"/>
-
+                constraintName="fk_expense_split_ref_user"/>
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+    <changeSet id="2" author="nit208">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="group_member" columnName="ref_group"/>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM group_member WHERE ref_group IS NULL
+                </sqlCheck>
+            </and>
+        </preConditions>
+
+        <sql>
+            ALTER TABLE group_member
+            ALTER COLUMN ref_group SET NOT NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="nit208">
+        <preConditions onFail="MARK_RAN">
+            <and>
+                <columnExists tableName="group_member" columnName="ref_user"/>
+                <sqlCheck expectedResult="0">
+                    SELECT COUNT(*) FROM group_member WHERE ref_user IS NULL
+                </sqlCheck>
+            </and>
+        </preConditions>
+
+        <sql>
+            ALTER TABLE group_member
+            ALTER COLUMN ref_user SET NOT NULL;
+        </sql>
+    </changeSet>
+</databaseChangeLog>
