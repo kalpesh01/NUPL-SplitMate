@@ -1,47 +1,47 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.CreateUserRequest;
-import com.splitmate.dto.request.UpdateUserRequest;
-import com.splitmate.dto.response.UserResponse;
-import com.splitmate.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.splitmate.db.dto.user.CreateUserDto;
+import com.splitmate.db.dto.user.UpdateUserDto;
+import com.splitmate.db.dto.user.UserInfoDto;
+import com.splitmate.buissness.service.UserService;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody CreateUserRequest userRequest) {
-        return ResponseEntity.ok(userService.createUser(userRequest));
+    public UserInfoDto create(@Valid @RequestBody final CreateUserDto userRequest) {  //remove the ResponseEntity // add @Valid
+        return userService.create(userRequest);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserResponse> get(@PathVariable Long userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+    public UserInfoDto get(@PathVariable final Long userId) {
+        return userService.get(userId);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> all() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public List<UserInfoDto> all() {
+        return userService.getAll();
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserResponse> updateUser(
-            @PathVariable Long userId,
-            @RequestBody UpdateUserRequest request
+    public UserInfoDto updateUser(
+            @PathVariable final Long userId,
+            @RequestBody final UpdateUserDto request
     ) {
-        return ResponseEntity.ok(userService.updateUser(userId, request));
+        return userService.update(userId, request);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+    public void deleteUser(@PathVariable final Long userId) {
+        userService.delete(userId);
     }
 }

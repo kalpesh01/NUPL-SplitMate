@@ -1,43 +1,40 @@
 package com.splitmate.controller;
 
-import com.splitmate.dto.request.UpdateSplitRequest;
-import com.splitmate.dto.response.SplitResponse;
-import com.splitmate.entity.ExpenseSplit;
-import com.splitmate.service.ExpenseSplitService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDto;
+import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDto;
+import com.splitmate.buissness.service.ExpenseSplitService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/expenses/{expenseId}/splits")
+@AllArgsConstructor
 public class ExpenseSplitController {
 
-    @Autowired
-    private ExpenseSplitService service;
+    private final ExpenseSplitService expenseSplitService;
 
     @GetMapping
-    public ResponseEntity<List<SplitResponse>> getAll(@PathVariable Long expenseId) {
-        return ResponseEntity.ok(service.getSplits(expenseId));
+    public List<ExpenseSplitInfoDto> getAll(@PathVariable final Long expenseId) {
+        return expenseSplitService.get(expenseId);
     }
 
     @PutMapping("/{splitId}")
-    public ResponseEntity<SplitResponse> update(
-            @PathVariable Long expenseId,
-            @PathVariable Long splitId,
-            @RequestBody UpdateSplitRequest req) {
+    public ExpenseSplitInfoDto update(
+            @PathVariable final Long expenseId,
+            @PathVariable final Long splitId,
+            @RequestBody final UpdateExpenseSplitDto req) {
 
-        return ResponseEntity.ok(service.updateSplit(expenseId, splitId, req));
+        return expenseSplitService.update(expenseId, splitId, req);
     }
 
     @DeleteMapping("/{splitId}")
-    public ResponseEntity<Void> delete(
-            @PathVariable Long expenseId,
-            @PathVariable Long splitId) {
+    public void delete(
+            @PathVariable final Long expenseId,
+            @PathVariable final Long splitId) {
 
-        service.deleteSplit(expenseId, splitId);
-        return ResponseEntity.noContent().build();
+        expenseSplitService.delete(expenseId, splitId);
     }
 }
 
