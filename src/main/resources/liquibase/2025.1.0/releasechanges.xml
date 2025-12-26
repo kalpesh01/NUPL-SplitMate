@@ -3,12 +3,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
-    <include file="liquibase/2025.1.0/user/01_create_user_table.xml"/>
-    <include file="liquibase/2025.1.0/user_group/01_create_user_group_table.xml"/>
-    <include file="liquibase/2025.1.0/group_member/01_create_group_member_table.xml"/>
-    <include file="liquibase/2025.1.0/expense/01_create_expense_table.xml"/>
-    <include file="liquibase/2025.1.0/expense_split/01_create_expense_split_table.xml"/>
-    <include file="liquibase/2025.1.0/group_member/02_alter_group_member_table.xml"/>
+    <include file="liquibase/2025.1.0/user/01_create_table.xml"/>
+    <include file="liquibase/2025.1.0/user_group/01_create_table.xml"/>
+    <include file="liquibase/2025.1.0/group_member/01_create_table.xml"/>
+    <include file="liquibase/2025.1.0/expense/01_create_table.xml"/>
+    <include file="liquibase/2025.1.0/expense_split/01_create_table.xml"/>
+    <include file="liquibase/2025.1.0/group_member/02_alter_table.xml"/>
 
 
 </databaseChangeLog>

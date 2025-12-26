@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddGroupMemberDTO {
+public class CreateGroupMemberDTO
+{
     private Long userId;
 }
 

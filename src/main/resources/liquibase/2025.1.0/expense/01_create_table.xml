@@ -4,46 +4,45 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
-
     <changeSet id="1" author="nit208">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="group_member"/>
+                <tableExists tableName="expense"/>
             </not>
         </preConditions>
-        <createTable tableName="group_member">
+        <createTable tableName="expense">
 
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="ref_group" type="BIGINT">
+            <column name="description" type="VARCHAR(255)"/>
+
+            <column name="amount" type="DOUBLE">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="ref_user" type="BIGINT">
-                <constraints nullable="false"/>
-            </column>
+            <column name="expense_date" type="DATE"/>
+
+            <column name="ref_group" type="BIGINT"/>
+
+            <column name="ref_user" type="BIGINT"/>
 
         </createTable>
 
-        <addUniqueConstraint
-                tableName="group_member"
-                columnNames="ref_group,ref_user"
-                constraintName="uq_group_user"/>
-
         <addForeignKeyConstraint
-                baseTableName="group_member"
+                baseTableName="expense"
                 baseColumnNames="ref_group"
                 referencedTableName="user_group"
                 referencedColumnNames="id"
-                constraintName="fk_group_member_ref_group"/>
+                constraintName="fk_expense_ref_group"/>
 
         <addForeignKeyConstraint
-                baseTableName="group_member"
+                baseTableName="expense"
                 baseColumnNames="ref_user"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                constraintName="fk_group_member_ref_user"/>
+                constraintName="fk_expense_ref_user"/>
+
     </changeSet>
 </databaseChangeLog>
