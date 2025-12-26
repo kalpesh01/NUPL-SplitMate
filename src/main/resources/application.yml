@@ -8,6 +8,11 @@ spring:
     username: sa
     password:
 
+#datasource:
+#  url: jdbc:mysql://localhost:3306/splitmate_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+#  username: root
+#  password: root
+#  driver-class-name: com.mysql.cj.jdbc.Driver
 
   kafka:
     bootstrap-servers: localhost:9992

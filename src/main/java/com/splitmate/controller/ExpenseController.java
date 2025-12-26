@@ -1,9 +1,9 @@
 package com.splitmate.controller;
 
-import com.splitmate.db.dto.expense.CreateExpenseDto;
-import com.splitmate.db.dto.expense.ExpenseInfoDto;
-import com.splitmate.db.dto.expense.UpdateExpenseDto;
-import com.splitmate.buissness.service.ExpenseService;
+import com.splitmate.db.dto.expense.CreateExpenseDTO;
+import com.splitmate.db.dto.expense.ExpenseInfoDTO;
+import com.splitmate.db.dto.expense.UpdateExpenseDTO;
+import com.splitmate.business.service.ExpenseService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,28 +17,28 @@ public class ExpenseController {
     private final ExpenseService service;
 
     @PostMapping("/groups/{groupId}")
-    public ExpenseInfoDto create(
+    public ExpenseInfoDTO create(
             @PathVariable final Long groupId,
-            @RequestBody final CreateExpenseDto request) {
+            @RequestBody final CreateExpenseDTO request) {
         return service.create(groupId, request);
     }
 
     @GetMapping("/groups/{groupId}")
-    public List<ExpenseInfoDto> getAll(
+    public List<ExpenseInfoDTO> getAll(
             @PathVariable final Long groupId) {
         return service.getByGroup(groupId);
     }
 
     @GetMapping("/{expenseId}")
-    public ExpenseInfoDto getById(
+    public ExpenseInfoDTO getById(
             @PathVariable final Long expenseId) {
         return service.get(expenseId);
     }
 
     @PutMapping("/{expenseId}")
-    public ExpenseInfoDto update(
+    public ExpenseInfoDTO update(
             @PathVariable final Long expenseId,
-            @RequestBody final UpdateExpenseDto request) {
+            @RequestBody final UpdateExpenseDTO request) {
         return service.update(expenseId, request);
     }
 
