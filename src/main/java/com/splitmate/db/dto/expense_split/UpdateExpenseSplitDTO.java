@@ -5,7 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateExpenseSplitDTO {
+public class UpdateExpenseSplitDTO
+{
     private Double shareAmount;
     private String paymentStatus;
 }
