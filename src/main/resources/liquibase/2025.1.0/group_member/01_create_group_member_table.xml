@@ -37,13 +37,13 @@
                 baseColumnNames="ref_group"
                 referencedTableName="user_group"
                 referencedColumnNames="id"
-                constraintName="fk_groupmembers_group"/>
+                constraintName="fk_group_member_ref_group"/>
 
         <addForeignKeyConstraint
                 baseTableName="group_member"
                 baseColumnNames="ref_user"
                 referencedTableName="user"
                 referencedColumnNames="id"
-                constraintName="fk_groupmembers_user"/>
+                constraintName="fk_group_member_ref_user"/>
     </changeSet>
 </databaseChangeLog>

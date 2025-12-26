@@ -1,14 +1,14 @@
-package com.splitmate.buissness.service.impl;
+package com.splitmate.business.service.impl;
 
+import com.splitmate.db.dto.user.CreateUserDTO;
+import com.splitmate.db.dto.user.UserInfoDTO;
 import com.splitmate.db.entity.UserEntity;
-import com.splitmate.db.dao.UserDao;
-import com.splitmate.db.dto.user.CreateUserDto;
-import com.splitmate.db.dto.user.UpdateUserDto;
-import com.splitmate.db.dto.user.UserInfoDto;
+import com.splitmate.db.dao.UserDAO;
+import com.splitmate.db.dto.user.UpdateUserDTO;
 import com.splitmate.enums.ErrorCodes;
 import com.splitmate.exception.error.ResourceNotFoundException;
 import com.splitmate.mapper.UserMapper;
-import com.splitmate.buissness.service.UserService;
+import com.splitmate.business.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserDAO userDao;
     private final UserMapper userMapper;
 
     @Override
-    public UserInfoDto create(final CreateUserDto createUserDto) {
+    public UserInfoDTO create(final CreateUserDTO createUserDto) {
         if (userDao.existsByEmail(createUserDto.getEmail())) {
             throw new ResourceNotFoundException(ErrorCodes.EMAIL_ALREADY_EXIST.getMessage());
         }
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfoDto> getAll() {
+    public List<UserInfoDTO> getAll() {
         return userDao.findAll()
                 .stream()
                 .map(userMapper::entityToDto)
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto get(final Long id) {
+    public UserInfoDTO get(final Long id) {
         UserEntity user = userDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage()));
 
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfoDto update(final Long id, final UpdateUserDto updateUserDto) {
+    public UserInfoDTO update(final Long id, final UpdateUserDTO updateUserDto) {
         UserEntity user = userDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.USERS_NOT_FOUND.getMessage()));
 

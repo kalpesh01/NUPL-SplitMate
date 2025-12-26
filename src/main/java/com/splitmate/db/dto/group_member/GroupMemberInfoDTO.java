@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GroupMemberInfoDto {
+public class GroupMemberInfoDTO {
     private Long id;
     private Long userId;
     private Long groupId;

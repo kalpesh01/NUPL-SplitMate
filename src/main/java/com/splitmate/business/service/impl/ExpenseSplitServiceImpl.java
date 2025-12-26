@@ -1,11 +1,11 @@
-package com.splitmate.buissness.service.impl;
+package com.splitmate.business.service.impl;
 
-import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDto;
-import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDto;
+import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDTO;
+import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDTO;
 import com.splitmate.db.entity.ExpenseSplitEntity;
-import com.splitmate.db.dao.ExpenseSplitDao;
+import com.splitmate.db.dao.ExpenseSplitDAO;
 import com.splitmate.mapper.ExpenseSplitMapper;
-import com.splitmate.buissness.service.ExpenseSplitService;
+import com.splitmate.business.service.ExpenseSplitService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,26 +15,25 @@ import java.util.List;
 @AllArgsConstructor
 public class ExpenseSplitServiceImpl implements ExpenseSplitService {
 
-    private final ExpenseSplitDao expenseSplitDao;
+    private final ExpenseSplitDAO expenseSplitDao;
     private final ExpenseSplitMapper expenseSplitMapper;
 
     @Override
-    public ExpenseSplitInfoDto create(ExpenseSplitEntity expenseSplitEntity) {
+    public ExpenseSplitInfoDTO create(ExpenseSplitEntity expenseSplitEntity) {
         return expenseSplitMapper.entityToDto(expenseSplitDao.save(expenseSplitEntity));
     }
 
     @Override
-    public List<ExpenseSplitInfoDto> get(final Long expenseId) {
-        List<ExpenseSplitInfoDto> list = expenseSplitDao.findAll().stream()
+    public List<ExpenseSplitInfoDTO> get(final Long expenseId) {
+
+        return expenseSplitDao.findAll().stream()
                 .filter(s -> s.getExpenseEntity().getId().equals(expenseId))
                 .map(expenseSplitMapper::entityToDto)
                 .toList();
-
-        return list;
     }
 
     @Override
-    public ExpenseSplitInfoDto update(final Long expenseId, final Long splitId, final UpdateExpenseSplitDto updateExpenseSplitDto) {
+    public ExpenseSplitInfoDTO update(final Long expenseId, final Long splitId, final UpdateExpenseSplitDTO updateExpenseSplitDto) {
 
         ExpenseSplitEntity split = expenseSplitDao.findById(splitId)
                 .orElseThrow(() -> new RuntimeException("Split not found"));

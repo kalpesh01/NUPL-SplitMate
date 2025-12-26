@@ -1,8 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDto;
-import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDto;
-import com.splitmate.buissness.service.ExpenseSplitService;
+import com.splitmate.db.dto.expense_split.ExpenseSplitInfoDTO;
+import com.splitmate.db.dto.expense_split.UpdateExpenseSplitDTO;
+import com.splitmate.business.service.ExpenseSplitService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +16,15 @@ public class ExpenseSplitController {
     private final ExpenseSplitService expenseSplitService;
 
     @GetMapping
-    public List<ExpenseSplitInfoDto> getAll(@PathVariable final Long expenseId) {
+    public List<ExpenseSplitInfoDTO> getAll(@PathVariable final Long expenseId) {
         return expenseSplitService.get(expenseId);
     }
 
     @PutMapping("/{splitId}")
-    public ExpenseSplitInfoDto update(
+    public ExpenseSplitInfoDTO update(
             @PathVariable final Long expenseId,
             @PathVariable final Long splitId,
-            @RequestBody final UpdateExpenseSplitDto req) {
+            @RequestBody final UpdateExpenseSplitDTO req) {
 
         return expenseSplitService.update(expenseId, splitId, req);
     }

@@ -1,15 +1,15 @@
-package com.splitmate.buissness.service.impl;
+package com.splitmate.business.service.impl;
 
-import com.splitmate.db.dao.GroupMemberDao;
-import com.splitmate.db.dto.group_member.AddGroupMemberDto;
-import com.splitmate.db.dto.group_member.GroupMemberInfoDto;
+import com.splitmate.db.dao.GroupMemberDAO;
+import com.splitmate.db.dto.group_member.AddGroupMemberDTO;
+import com.splitmate.db.dto.group_member.GroupMemberInfoDTO;
 import com.splitmate.db.entity.GroupEntity;
 import com.splitmate.db.entity.GroupMemberEntity;
 import com.splitmate.db.entity.UserEntity;
 import com.splitmate.mapper.GroupMemberMapper;
-import com.splitmate.buissness.service.GroupMemberService;
-import com.splitmate.buissness.service.GroupService;
-import com.splitmate.buissness.service.UserService;
+import com.splitmate.business.service.GroupMemberService;
+import com.splitmate.business.service.GroupService;
+import com.splitmate.business.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +21,11 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     private final GroupService groupService;
     private final UserService userService;
-    private final GroupMemberDao groupMemberDao;
+    private final GroupMemberDAO groupMemberDao;
     private final GroupMemberMapper groupMemberMapper;
 
     @Override
-    public GroupMemberInfoDto add(final Long groupId, final AddGroupMemberDto addGroupMemberDto) {
+    public GroupMemberInfoDTO add(final Long groupId, final AddGroupMemberDTO addGroupMemberDto) {
 
         GroupEntity groupEntity = groupService.findById(groupId);
         UserEntity user = userService.findById(addGroupMemberDto.getUserId());
@@ -36,7 +36,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     }
 
     @Override
-    public List<GroupMemberInfoDto> get(final Long groupId) {
+    public List<GroupMemberInfoDTO> get(final Long groupId) {
 
         List<GroupMemberEntity> members = groupMemberDao.findByGroupEntity_Id(groupId);
 

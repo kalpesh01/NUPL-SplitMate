@@ -1,14 +1,14 @@
-package com.splitmate.buissness.service.impl;
+package com.splitmate.business.service.impl;
 
-import com.splitmate.db.dto.group.CreateGroupDto;
-import com.splitmate.db.dto.group.GroupInfoDto;
-import com.splitmate.db.dto.group.UpdateGroupDto;
+import com.splitmate.db.dto.group.CreateGroupDTO;
+import com.splitmate.db.dto.group.GroupInfoDTO;
+import com.splitmate.db.dto.group.UpdateGroupDTO;
 import com.splitmate.db.entity.GroupEntity;
-import com.splitmate.db.dao.GroupDao;
+import com.splitmate.db.dao.GroupDAO;
 import com.splitmate.enums.ErrorCodes;
 import com.splitmate.exception.error.ResourceNotFoundException;
 import com.splitmate.mapper.GroupMapper;
-import com.splitmate.buissness.service.GroupService;
+import com.splitmate.business.service.GroupService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +18,12 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupServiceImpl implements GroupService {
 
-    private final GroupDao groupDao;
+    private final GroupDAO groupDao;
 
     private final GroupMapper groupMapper;
 
     @Override
-    public GroupInfoDto create(final CreateGroupDto createGroupDto) {
+    public GroupInfoDTO create(final CreateGroupDTO createGroupDto) {
 
         GroupEntity groupEntity = groupMapper.dtoToEntity(createGroupDto);
         groupDao.save(groupEntity);
@@ -31,21 +31,21 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupInfoDto> getAll() {
+    public List<GroupInfoDTO> getAll() {
         return groupDao.findAll().stream()
                 .map(groupMapper::entityToDto)
                 .toList();
     }
 
     @Override
-    public GroupInfoDto get(final Long id) {
+    public GroupInfoDTO get(final Long id) {
         GroupEntity groupEntity = groupDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.GROUP_NOT_FOUND.getMessage()));
         return groupMapper.entityToDto(groupEntity);
     }
 
     @Override
-    public GroupInfoDto update(final Long id, final UpdateGroupDto updateGroupDto) {
+    public GroupInfoDTO update(final Long id, final UpdateGroupDTO updateGroupDto) {
         GroupEntity groupEntity = groupDao.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ErrorCodes.GROUP_NOT_FOUND.getMessage()));
 

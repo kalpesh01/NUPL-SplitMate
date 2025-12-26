@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateGroupDto {
+public class CreateGroupDTO {
     private String name;
 }
+

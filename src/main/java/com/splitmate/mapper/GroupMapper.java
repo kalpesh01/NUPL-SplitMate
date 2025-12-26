@@ -1,8 +1,8 @@
 package com.splitmate.mapper;
 
-import com.splitmate.db.dto.group.CreateGroupDto;
-import com.splitmate.db.dto.group.GroupInfoDto;
-import com.splitmate.db.dto.group.UpdateGroupDto;
+import com.splitmate.db.dto.group.CreateGroupDTO;
+import com.splitmate.db.dto.group.GroupInfoDTO;
+import com.splitmate.db.dto.group.UpdateGroupDTO;
 import com.splitmate.db.entity.GroupEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,12 +14,12 @@ import org.mapstruct.MappingTarget;
 public interface GroupMapper {
 
     @Mapping(target = "id", ignore = true)
-    GroupEntity dtoToEntity(CreateGroupDto dto);
+    GroupEntity dtoToEntity(CreateGroupDTO dto);
 
     @Mapping(target = "id", ignore = true)
-    void updateDtoToEntity(UpdateGroupDto dto,
+    void updateDtoToEntity(UpdateGroupDTO dto,
                            @MappingTarget GroupEntity entity);
 
-    GroupInfoDto entityToDto(GroupEntity entity);
+    GroupInfoDTO entityToDto(GroupEntity entity);
 }
 

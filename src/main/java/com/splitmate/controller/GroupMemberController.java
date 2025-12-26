@@ -1,8 +1,8 @@
 package com.splitmate.controller;
 
-import com.splitmate.db.dto.group_member.AddGroupMemberDto;
-import com.splitmate.db.dto.group_member.GroupMemberInfoDto;
-import com.splitmate.buissness.service.GroupMemberService;
+import com.splitmate.db.dto.group_member.AddGroupMemberDTO;
+import com.splitmate.db.dto.group_member.GroupMemberInfoDTO;
+import com.splitmate.business.service.GroupMemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +16,14 @@ public class GroupMemberController {
     private final GroupMemberService groupMemberService;
 
     @PostMapping("/group/{groupId}/member")
-    public GroupMemberInfoDto addMember(
+    public GroupMemberInfoDTO addMember(
             @PathVariable final Long groupId,
-            @RequestBody final AddGroupMemberDto request) {
+            @RequestBody final AddGroupMemberDTO request) {
         return groupMemberService.add(groupId, request);
     }
 
     @GetMapping("/group/{groupId}/member")
-    public List<GroupMemberInfoDto> getMembers(@PathVariable final Long groupId) {
+    public List<GroupMemberInfoDTO> getMembers(@PathVariable final Long groupId) {
         return groupMemberService.get(groupId);
     }
 
